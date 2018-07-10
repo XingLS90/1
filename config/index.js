@@ -12,9 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/api': {
-            target: 'http://weixin.lenovo.com.cn/lwechat/:8080/',
+            target: 'http://weixin.lenovo.com.cn/lwechat/',
             changeOrigin: true,
-            pathRewrite: {'^/api': '/'}
+            pathRewrite: {'^/api': 'http://lwechat.lenovo.com.cn'}
         }
     },
 

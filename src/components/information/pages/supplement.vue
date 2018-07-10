@@ -1,17 +1,37 @@
 <template>
   <div class="supp">
     <div class="title"><img src="../../../assets/images/issue.png"></div>
-    <div v-for="(item,index) of list" :id="item.id" :key="index" class="item border-bottom">
-      <input class="select" type="checkbox" :key="item.id" :value="item.msg" v-model="checkedNames">
-      <label class="select-state" :for="item.id">{{item.msg}}</label>
+    <div class="item border-bottom">
+      <input id="a" class="select" ref="a" type="checkbox" :value="service1">
+      <label class="select-state" for="a">{{service1}}</label>
     </div>
     <div class="item border-bottom">
-      <input class="select" type="checkbox" :value="rests" ref="dom" @change="handleInpVal">
-      <input class="issue" type="text" placeholder="其他问题：" ref="dom1" v-model="rests" @change="handleInpVal"  @click="hangleDataStore">
+      <input id="b" class="select" ref="b" type="checkbox" :value="service2">
+      <label class="select-state" for="b">{{service2}}</label>
     </div>
-    <router-link to="/information1" class="next">
+    <div class="item border-bottom">
+      <input id="c" class="select" ref="c" type="checkbox" :value="service3">
+      <label class="select-state" for="c">{{service3}}</label>
+    </div>
+    <div class="item border-bottom">
+      <input
+        class="select"
+        type="checkbox"
+        ref="d"
+        @change="handleInpVal">
+      <input
+        maxlength="200"
+        class="issue"
+        type="text"
+        :value="other"
+        disabled=true
+        ref="d1"
+        @change="handleInpVal"
+        @click="handleInpValClick">
+    </div>
+    <p class="next" @click="handleSubmitMsg">
       <img src="../../../assets/images/next.png">
-    </router-link>
+    </p>
   </div>
 </template>
 
@@ -20,33 +40,52 @@ export default {
   name: 'InformationSupplement',
   data () {
     return {
-      list: [
-        {id: 'a', msg: '信号不稳定（掉线）：重要文件传输中断，游戏狂high中闪退......'},
-        {id: 'b', msg: '信号覆盖不佳（部分区域信号差或无信号）：洗手间没信号，不开心......'},
-        {id: 'c', msg: '网速慢：明明办了100M的宽带，看视频居然还卡......'}],
-      handleBorder: true,
-      checkedNames: [],
-      rests: ''
+      service1: '信号不稳定（掉线）：重要文件传输中断，游戏狂high中闪退......',
+      service2: '信号覆盖不佳（部分区域信号差或无信号）：洗手间没信号，不开心......',
+      service3: '网速慢：明明办了100M的宽带，看视频居然还卡......',
+      other: '其他问题：',
+      show: false
     }
   },
   methods: {
     handleInpVal () {
-      if (this.$refs.dom.checked) {
-        this.checkedNames[3] = this.rests
+      if (this.$refs.d.checked) {
+        this.$refs.d1.disabled = false
       } else {
-        this.checkedNames.pop(this.rests)
+        this.$refs.d1.disabled = true
       }
     },
-    hangleDataStore () {
-      let value = this.checkedNames
-      let address = ''
-      let num = 1
-      for (let i of value) {
-        if (i) {
-          address += (num++) + '、' + i + ' '
+    handleInpValClick () {
+      this.$refs.d1.value = ''
+    },
+    handleSubmitMsg () {
+      if (this.$refs.a.checked) {
+        let value = this.$refs.a.value
+        this.$store.commit('service1', value)
+      }
+      if (this.$refs.b.checked) {
+        let value = this.$refs.b.value
+        this.$store.commit('service2', value)
+      }
+      if (this.$refs.c.checked) {
+        let value = this.$refs.c.value
+        this.$store.commit('service3', value)
+      }
+      if (this.$refs.d.checked) {
+        if (this.$refs.d1.value !== '其他问题：') {
+          let value = this.$refs.d1.value
+          this.$store.commit('other', value)
         }
       }
-      this.$store.commit('networkProblem', address)
+      if (this.$refs.a.checked || this.$refs.b.checked || this.$refs.c.checked || (this.$refs.d.checked && this.$refs.d1.value !== '其他问题：')) {
+        this.show = true
+      } else {
+        this.show = false
+      }
+
+      if (this.$store.state.product && this.$store.state.address && this.$store.state.specificaddress && this.show) {
+        this.$router.push('/information1')
+      }
     }
   }
 }

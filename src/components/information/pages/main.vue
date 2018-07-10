@@ -12,7 +12,7 @@
     </div>
     <div class="list border-bottom">
       <span class="title">详细地址</span>
-      <input class="detail" type="text" v-model="placeholder" placeholder="详细地址、门牌号" @change="onSiteChange">
+      <input class="detail" type="text" maxlength="50" v-model="placeholder" placeholder="详细地址、门牌号" @change="onSiteChange">
     </div>
   </div>
 </template>
