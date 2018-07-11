@@ -15,6 +15,7 @@
     </div>
     <div class="item border-bottom">
       <input
+        id="d"
         class="select"
         type="checkbox"
         ref="d"
@@ -116,9 +117,8 @@ export default {
         color: #333
       .issue
         width: 3.14rem
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
+        height: .6rem
+        background: #fff
     .next
       position: absolute
       top: 6.1rem

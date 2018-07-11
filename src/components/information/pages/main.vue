@@ -48,12 +48,6 @@ export default {
     PopupPicker
   },
   methods: {
-    doShowAddress () {
-      this.showAddress = true
-      setTimeout(() => {
-        this.showAddress = false
-      }, 2000)
-    },
     changeData () {
       this.value2 = ['430000', '430400', '430407']
     },

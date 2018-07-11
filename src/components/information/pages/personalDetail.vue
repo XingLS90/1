@@ -4,15 +4,15 @@
       <p class="nav">预约人信息</p>
       <div class="list border-bottom">
         <p class="title">姓名</p>
-        <input type="text" value="" maxlength="20" ref="name" @change="handleVerifyName" @click="handlefalseName" />
+        <input type="text" value="" maxlength="20" ref="name" @change="handleVerifyName" />
       </div>
       <div class="list border-bottom">
         <p class="title">电话</p>
-        <input type="text" value="" ref="phone" @change="handleVerifyPhone" @click="handlefalsePhone" />
+        <input type="text" value="" ref="phone" @change="handleVerifyPhone" />
       </div>
       <div class="list border-bottom">
         <p class="title">验证码</p>
-        <input type="text" value="" ref="code" @change="handleVerifyCode" @click="handlefalseCode" />
+        <input type="text" value="" ref="code" @change="handleVerifyCode" />
         <button
           class="code border-left"
           @click="handleCodeMsg"
@@ -28,7 +28,7 @@
         <group>
           <calendar  @on-change="handleAm" v-model="demo2" title="" disable-past placeholder="选择时间" ref="data" ></calendar>
         </group>
-        <input class="am" ref="am" type="text" disabled=false :value="time" @click="handleDayTime">
+        <button class="am" ref="am" type="text" disabled=false @click="handleDayTime" >{{time}}</button>
       </div>
     </div>
     <div class="explain">我们会在您所选择日期的当天安排工程师上门，请您届时家中留人，并保持电话畅通。</div>
@@ -58,25 +58,21 @@ export default {
     }
   },
   methods: {
-    // change
     handleVerifyName () {
+      let this_ = this
       let nameReg = /^([\u4e00-\u9fa5]{2,4})$/
       let name = this.$refs.name.value
       if (!nameReg.test(name)) {
         this.$refs.name.value = '请输入正确的名字'
         this.$refs.name.style = 'color: red'
+        setTimeout(function () {
+          this_.$refs.name.value = ''
+          this_.$refs.name.style = 'color: #999'
+        }, 1500)
       } else {
         this.$store.commit('name', name)
       }
     },
-    // click
-    handlefalseName () {
-      if (this.$refs.name.value === '请输入正确的名字') {
-        this.$refs.name.value = ''
-        this.$refs.name.style = 'color: #999'
-      }
-    },
-    // change
     handleVerifyPhone () {
       let this_ = this
       let phoneReg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
@@ -92,25 +88,19 @@ export default {
         this.$store.commit('phone', phone)
       }
     },
-    // click
-    handlefalsePhone () {
-    },
-    // change
     handleVerifyCode () {
+      let this_ = this
       let codeReg = /^\d{6}$/
       let code = this.$refs.code.value
       if (!codeReg.test(code)) {
         this.$refs.code.value = '验证码错误'
         this.$refs.code.style = 'color: red'
+        setTimeout(function () {
+          this_.$refs.code.value = ''
+          this_.$refs.code.style = 'color: #999'
+        }, 1500)
       }
       this.$store.commit('code', code)
-    },
-    // click
-    handlefalseCode () {
-      if (this.$refs.code.value === '验证码错误') {
-        this.$refs.code.value = ''
-        this.$refs.code.style = 'color: #999'
-      }
     },
     // 获取验证码
     handleCodeMsg () {
@@ -234,7 +224,7 @@ export default {
       margin-top: .44rem
       .list
         display: flex
-        justify-content: space-around
+        justify-content: space-between
         height: .41rem
         line-height: .4rem
         .title
@@ -242,6 +232,9 @@ export default {
           font-size: .15rem
           color: #626262
         .am
+          width: 1rem
+          font-size: .16rem
+          color: #999
           background: #fff
         input
           width: 1.5rem
